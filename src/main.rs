@@ -32,19 +32,31 @@ fn quadratic_formula (a: f64,b: f64, c: f64) {
 
 fn complex_numbers(a: f64, b: f64, discriminant: f64) {
     let sqrt_discriminant_i = discriminant.abs().sqrt();
-    let x_i = sqrt_discriminant_i / (2.0 * a);
-    let x_r = -b / (2.0 * a);
 
-    let approx_x_i: Ratio<i64> = Ratio::approximate_float(x_i).unwrap().reduced();
-    let approx_x_r: Ratio<i64> = Ratio::approximate_float(x_r).unwrap().reduced();
+    if irrational(sqrt_discriminant_i){
+        let x_r = -b / (2.0 * a);
+        let approx_x_r: Ratio<i64> = Ratio::approximate_float(x_r).unwrap().reduced();
 
-    if x_i == 1.0{
-        println!("Result complex number: {}x = {} ± i{}",GREEN, approx_x_r, RESET);
+        println!("Result complex number: {}x = {} ± (√{}/{})i{}",GREEN, approx_x_r, discriminant.abs(),(2.0 * a), RESET);
+        
+    }else {
 
-    }else{
-        println!("Result complex number: {}x = {} ± {}i{}",GREEN, approx_x_r, approx_x_i, RESET);
+        let x_i = sqrt_discriminant_i / (2.0 * a);
+        let x_r = -b / (2.0 * a);
+    
+        let approx_x_i: Ratio<i64> = Ratio::approximate_float(x_i).unwrap().reduced();
+        let approx_x_r: Ratio<i64> = Ratio::approximate_float(x_r).unwrap().reduced();
+    
+        if x_i == 1.0{
+            println!("Result complex number: {}x = {} ± i{}",GREEN, approx_x_r, RESET);
+    
+        }else{
+            println!("Result complex number: {}x = {} ± {}i{}",GREEN, approx_x_r, approx_x_i, RESET);
+        }
+      
     }
-  
+
+
 }
 
 fn real_numbers(a: f64, b: f64, discriminant: f64){
@@ -60,6 +72,9 @@ fn real_numbers(a: f64, b: f64, discriminant: f64){
     println!("{}Result real number:{} {}x1 = {}{}, {}x2 = {}{}", WHITE, RESET, GREEN, approx_x1, RESET, YELLOW, approx_x2, RESET);
 }
 
+fn irrational(n: f64) -> bool {
+    n % 1.0 != 0.0
+}
 
 fn get_coefficients() -> (f64, f64, f64) {
     let _a = read_int("a");
